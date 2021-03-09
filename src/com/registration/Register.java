@@ -9,18 +9,20 @@ import java.util.regex.PatternSyntaxException;
 public class Register {
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
+    private static final Pattern VALID_PASSWORD_REGEX = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$", Pattern.CASE_INSENSITIVE);
     private String firstName;
     private String lastName;
     private String emailAddress;
-    private String PhoneNumber;
+    private String phoneNumber;
     final int MINIMUM_LENGTH = 3;
+//    private Database<Account> account;
+    private String password;
 
     public Register(String firstName, String lastName, String emailAddress, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -57,11 +59,35 @@ public class Register {
         return matcher.find();
     }
 
+    private boolean validatePassword(String password){
+        Matcher matcher = VALID_PASSWORD_REGEX.matcher(password);
+        return matcher.find();
+    }
+
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        if(!validatePassword(password)) throw new PatternSyntaxException("Password must greater than five characters, must not contain white space and must contain at least a digit, lower case letter, uppercase case letter, a special character", password, -1);
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+       StringBuilder customerDetail = new StringBuilder();
+       customerDetail.append("First Name: ").append(firstName).append("\n");
+       customerDetail.append("Last Name: ").append(lastName).append("\n");
+       customerDetail.append("Email-Address: ").append(emailAddress).append("\n");
+       customerDetail.append("Phone-Number: ").append(phoneNumber).append("\n\n");
+       return customerDetail.toString();
     }
 }

@@ -14,7 +14,7 @@ class EmailTest {
 
     @BeforeEach
     void setUp() {
-        newUser = new Register("Ismail", "Abdullah", "tokun@gmail.com", "0905434552");
+        newUser = new Register("Ismail", "Abdullah", "andel@gmail.com", "0905434552");
     }
 
     @AfterEach
@@ -69,5 +69,22 @@ class EmailTest {
     void registerEmail_canGetAndSetNewUserPhoneNumber(){
         newUser.setPhoneNumber("909898888");
         assertEquals("909898888", newUser.getPhoneNumber());
+    }
+
+    @Test
+    void registerEmail_canGetAndSetNewUserPassword(){
+        newUser.setPassword("&Troy23");
+        assertEquals("&Troy23", newUser.getPassword());
+    }
+
+    @Test
+    void registerEmail_passwordNotStrong_ThrowsPatternSyntaxException(){
+        assertThrows(PatternSyntaxException.class, ()-> newUser.setPassword("7hjjew"));
+    }
+
+
+    @Test
+    void registerEmail_canDisplayCustomerDetails(){
+        assertEquals("First Name: Ismail\nLast Name: Abdullah\nEmail-Address: andel@gmail.com\nPhone-Number: 0905434552\n\n", newUser.toString());
     }
 }
