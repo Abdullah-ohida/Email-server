@@ -27,19 +27,27 @@ public abstract class MailBox {
     public Message getMessageById(int id) {
         Message isValid = null;
         for (Message message : messages){
-            if (message.getMessageId() == id)
+            if (isValidMessage(id, message.getMessageId()))
                 isValid = message;
         }
         return isValid;
     }
 
+    private boolean isValidMessage(int id, int messageId) {
+        return messageId == id;
+    }
+
     public boolean deleteMessage(int messageById) throws MailBoxUnderFlowException {
-        if(messages.size() == 0) throw new MailBoxUnderFlowException("Inbox is empty");
+        if(isEmpty()) throw new MailBoxUnderFlowException("Inbox is empty");
         return messages.remove(getMessageById(messageById));
     }
 
+    private boolean isEmpty() {
+        return messages.size() == 0;
+    }
+
     public void deleteAllMessage() throws MailBoxUnderFlowException {
-        if(messages.size() == 0) throw new MailBoxUnderFlowException("Inbox is empty");
+        if(isEmpty()) throw new MailBoxUnderFlowException("Inbox is empty");
         messages.clear();
     }
 }

@@ -19,9 +19,13 @@ public class Account{
         getDraft().addMessage(message);
         for (String address : recipientAddress){
             Customer recipient = EmailServer.findRecipient(address);
-            recipient.getAccounts().get(0).getInbox().addMessage(message);
+            send(message, recipient);
         }
 
+    }
+
+    private static void send(Message message, Customer recipient) {
+        recipient.getAccounts().get(0).getInbox().addMessage(message);
     }
 
     public Inbox getInbox() {
