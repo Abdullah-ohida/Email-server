@@ -1,6 +1,7 @@
 package com.services;
 
 import com.emailing.Message;
+import com.exceptions.MailBoxUnderFlowException;
 
 import java.util.ArrayList;
 
@@ -32,11 +33,13 @@ public abstract class MailBox {
         return isValid;
     }
 
-    public boolean deleteMessage(int messageById){
+    public boolean deleteMessage(int messageById) throws MailBoxUnderFlowException {
+        if(messages.size() == 0) throw new MailBoxUnderFlowException("Inbox is empty");
         return messages.remove(getMessageById(messageById));
     }
 
-    public void deleteAllMessage(){
+    public void deleteAllMessage() throws MailBoxUnderFlowException {
+        if(messages.size() == 0) throw new MailBoxUnderFlowException("Inbox is empty");
         messages.clear();
     }
 }
