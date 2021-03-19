@@ -6,6 +6,7 @@ import com.exceptions.MailBoxUnderFlowException;
 import com.exceptions.NameLengthException;
 import com.services.Account;
 import com.services.EmailServer;
+import com.services.MessageType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,8 @@ class EmailTest {
     @BeforeEach
     void setUp() {
         customer = new Customer("Ismail", "Abdullah", "andel@gmail.com", "0905434552");
-        message = new Message("Application", "I want to build a software");
-        newMassage =  new Message("I want to build a software");
+        message = new Message("Application", "I want to build a software", MessageType.PROMOTION);
+        newMassage =  new Message("I want to build a software", MessageType.PROMOTION);
         server = new EmailServer();
     }
 
@@ -157,6 +158,8 @@ class EmailTest {
 
        Account.sendMessage(message, customerB.getEmailAddress());
         assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 1);
+        assertNotNull(customerB.getAccounts().get(0).getNotification());
+        System.out.println(customerB.getAccounts().get(0).getNotification());
     }
 
     @Test
@@ -207,10 +210,10 @@ class EmailTest {
         Account accountB = customerB.getAccounts().get(0);
 
         Account.sendMessage(message, customerA.getEmailAddress());
-        Account.getDraft().forward(Account.getDraft().getMessageById(0), customerB.getEmailAddress(), customerA.getEmailAddress());
+        Account.getSendBox().forward(Account.getSendBox().getMessageById(0), customerB.getEmailAddress(), customerA.getEmailAddress());
 
-        assertEquals(accountA.getInbox().getMessageById(0), Account.getDraft().getMessageById(0));
-        assertEquals(accountB.getInbox().getMessageById(0), Account.getDraft().getMessageById(0));
+        assertEquals(accountA.getInbox().getMessageById(0), Account.getSendBox().getMessageById(0));
+        assertEquals(accountB.getInbox().getMessageById(0), Account.getSendBox().getMessageById(0));
     }
 
     @Test
@@ -227,8 +230,8 @@ class EmailTest {
         assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
 
         Account.sendMessage(message, customerB.getEmailAddress());
-        Account.sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
-        Account.sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+        Account.sendMessage(new Message("Story", "The man that stole the money is father", MessageType.SOCIAL), customerB.getEmailAddress());
+        Account.sendMessage(new Message( "The man that stole the money is father", MessageType.PRIMARY), customerB.getEmailAddress());
 
         assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 3);
         assertTrue(customerB.getAccounts().get(0).getInbox().deleteMessage(0));
@@ -251,8 +254,8 @@ class EmailTest {
         assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
 
         Account.sendMessage(message, customerB.getEmailAddress());
-        Account.sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
-        Account.sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+        Account.sendMessage(new Message("Story", "The man that stole the money is father", MessageType.SOCIAL), customerB.getEmailAddress());
+        Account.sendMessage(new Message( "The man that stole the money is father", MessageType.PRIMARY), customerB.getEmailAddress());
 
         assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 3);
         customerB.getAccounts().get(0).getInbox().deleteAllMessage();
@@ -290,13 +293,13 @@ class EmailTest {
         assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
 
         Account.sendMessage(message, customerB.getEmailAddress());
-        Account.sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
-        Account.sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+        Account.sendMessage(new Message("Story", "The man that stole the money is father", MessageType.SOCIAL), customerB.getEmailAddress());
+        Account.sendMessage(new Message( "The man that stole the money is father", MessageType.PRIMARY), customerB.getEmailAddress());
 
-        assertEquals(Account.getDraft().getMessages().size(), 3);
-        assertTrue(Account.getDraft().deleteMessage(0));
+        assertEquals(Account.getSendBox().getMessages().size(), 3);
+        assertTrue(Account.getSendBox().deleteMessage(0));
 
-        assertEquals(Account.getDraft().getMessages().size(), 2);
+        assertEquals(Account.getSendBox().getMessages().size(), 2);
 
     }
 
@@ -314,27 +317,27 @@ class EmailTest {
         assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
 
         Account.sendMessage(message, customerB.getEmailAddress());
-        Account.sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
-        Account.sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+        Account.sendMessage(new Message("Story", "The man that stole the money is father", MessageType.SOCIAL), customerB.getEmailAddress());
+        Account.sendMessage(new Message( "The man that stole the money is father", MessageType.PRIMARY), customerB.getEmailAddress());
 
-        assertEquals(Account.getDraft().getMessages().size(), 3);
-        Account.getDraft().deleteAllMessage();
+        assertEquals(Account.getSendBox().getMessages().size(), 3);
+        Account.getSendBox().deleteAllMessage();
 
-        assertEquals(Account.getDraft().getMessages().size(), 0);
+        assertEquals(Account.getSendBox().getMessages().size(), 0);
     }
 
     @Test
     void deleteDraftMessageWhenInboxIsEmpty_throwsMailBoxMailBoxUnderFlowException() throws IsOnFileException {
         Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
         server.register(customerA);
-        assertThrows(MailBoxUnderFlowException.class, ()-> Account.getDraft().deleteMessage(0));
+        assertThrows(MailBoxUnderFlowException.class, ()-> Account.getSendBox().deleteMessage(0));
     }
 
     @Test
     void deleteAllDraftMessageWhenInboxIsEmpty_throwsMailBoxMailBoxUnderFlowException() throws IsOnFileException {
         Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
         server.register(customerA);
-        assertThrows(MailBoxUnderFlowException.class, ()-> Account.getDraft().deleteAllMessage());
+        assertThrows(MailBoxUnderFlowException.class, ()-> Account.getSendBox().deleteAllMessage());
     }
 
 

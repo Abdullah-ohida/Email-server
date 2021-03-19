@@ -1,5 +1,7 @@
 package com.emailing;
 
+import com.services.MessageType;
+
 import java.time.LocalTime;
 
 public class Message {
@@ -7,15 +9,17 @@ public class Message {
     private String content;
     private static int messageId;
     private final LocalTime time;
+    private MessageType messageType;
 
-    public Message(String content){
-        this("",content);
+    public Message(String content, MessageType type){
+        this("",content, type);
 
     }
 
-    public Message(String subject, String content) {
+    public Message(String subject, String content, MessageType type) {
         this.subject = subject;
         this.content = content;
+        this.messageType = type;
         time = LocalTime.now();
     }
 
@@ -50,6 +54,14 @@ public class Message {
     public String timeFormat(){
         String meridian = time.getHour() >= 12 ? "PM" : "AM";
         return meridian;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
     }
 
     /**
