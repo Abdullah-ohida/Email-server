@@ -4,6 +4,7 @@ package com.customers;
 import com.services.Account;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Customer extends Register{
    private ArrayList<Account> accounts;
@@ -13,7 +14,11 @@ public class Customer extends Register{
         accounts = new ArrayList<Account>();
     }
 
-    public ArrayList<Account> getAccounts() {
+    public void addAccount(Account account){
+        accounts.add(account);
+    }
+
+    public List<Account> getAccounts() {
         return accounts;
     }
 
