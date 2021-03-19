@@ -1,4 +1,4 @@
-package com.registration;
+package com.customers;
 
 import com.exceptions.NameLengthException;
 
@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class Register {
+public  abstract class Register{
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_PASSWORD_REGEX = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$", Pattern.CASE_INSENSITIVE);
@@ -15,7 +15,6 @@ public class Register {
     private String emailAddress;
     private String phoneNumber;
     final int MINIMUM_LENGTH = 3;
-//    private Database<Account> account;
     private String password;
 
     public Register(String firstName, String lastName, String emailAddress, String phoneNumber) {
@@ -29,7 +28,7 @@ public class Register {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) throws NameLengthException {
         if(firstName.length() < MINIMUM_LENGTH) throw new NameLengthException("First name must contain more than two character");
         if(!(firstName.matches("[A-Z][a-zA-Z]*"))) throw new PatternSyntaxException("First name must start with capital letter", firstName, -1);
         this.firstName = firstName;
@@ -39,7 +38,7 @@ public class Register {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) throws NameLengthException {
         if(lastName.length() < MINIMUM_LENGTH) throw new NameLengthException("Last name must contain more than two character");
         if(!(lastName.matches("[a-zA-Z]+(['-][a-zA-Z]+)*")))throw new PatternSyntaxException("Last name must start with capital letter or small letter", firstName, -1);
         this.lastName = lastName;
@@ -83,11 +82,9 @@ public class Register {
 
     @Override
     public String toString() {
-       StringBuilder customerDetail = new StringBuilder();
-       customerDetail.append("First Name: ").append(firstName).append("\n");
-       customerDetail.append("Last Name: ").append(lastName).append("\n");
-       customerDetail.append("Email-Address: ").append(emailAddress).append("\n");
-       customerDetail.append("Phone-Number: ").append(phoneNumber).append("\n\n");
-       return customerDetail.toString();
+        return "First Name: " + firstName + "\n" +
+                "Last Name: " + lastName + "\n" +
+                "Email-Address: " + emailAddress + "\n" +
+                "Phone-Number: " + phoneNumber + "\n\n";
     }
 }

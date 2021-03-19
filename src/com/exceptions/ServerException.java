@@ -1,12 +1,14 @@
 package com.exceptions;
 
-public class NameLengthException extends ServerException {
+import java.security.PrivilegedActionException;
+
+public class ServerException extends Exception{
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public NameLengthException() {
+    public ServerException() {
     }
 
     /**
@@ -17,7 +19,7 @@ public class NameLengthException extends ServerException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public NameLengthException(String message) {
+    public ServerException(String message) {
         super(message);
     }
 
@@ -35,7 +37,7 @@ public class NameLengthException extends ServerException {
      *                unknown.)
      * @since 1.4
      */
-    public NameLengthException(String message, Throwable cause) {
+    public ServerException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -53,7 +55,7 @@ public class NameLengthException extends ServerException {
      *              unknown.)
      * @since 1.4
      */
-    public NameLengthException(Throwable cause) {
+    public ServerException(Throwable cause) {
         super(cause);
     }
 }
