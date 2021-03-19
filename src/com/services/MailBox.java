@@ -35,4 +35,8 @@ public abstract class MailBox {
     public boolean deleteMessage(int messageById){
         return messages.remove(getMessageById(messageById));
     }
+
+    public void deleteAllMessage(){
+        messages.clear();
+    }
 }

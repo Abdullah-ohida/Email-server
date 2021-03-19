@@ -3,7 +3,6 @@ package com.customers;
 import com.emailing.Message;
 import com.exceptions.IsOnFileException;
 import com.exceptions.NameLengthException;
-import com.services.Account;
 import com.services.EmailServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -233,4 +232,74 @@ class EmailTest {
 
     }
 
+    @Test
+    void canDeleteAllMessagesInInbox() throws IsOnFileException {
+        Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
+        Customer customerB = new Customer("Chibuzor", "Angel", "chibuzor@gmail.com", "08174536422");
+
+        server.register(customerA);
+        assertTrue(server.getRegisteredCustomer().contains(customerA));
+        assertTrue(customerA.getAccounts().contains(customerA.getAccounts().get(0)));
+
+        server.register(customerB);
+        assertTrue(server.getRegisteredCustomer().contains(customerB));
+        assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
+
+        customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+
+        assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 3);
+        customerB.getAccounts().get(0).getInbox().deleteAllMessage();
+
+        assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 0);
+    }
+
+
+    @Test
+    void canDeleteMessagesInDraft() throws IsOnFileException {
+        Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
+        Customer customerB = new Customer("Chibuzor", "Angel", "chibuzor@gmail.com", "08174536422");
+
+        server.register(customerA);
+        assertTrue(server.getRegisteredCustomer().contains(customerA));
+        assertTrue(customerA.getAccounts().contains(customerA.getAccounts().get(0)));
+
+        server.register(customerB);
+        assertTrue(server.getRegisteredCustomer().contains(customerB));
+        assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
+
+        customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+
+        assertEquals(customerA.getAccounts().get(0).getDraft().getMessages().size(), 3);
+        assertTrue(customerB.getAccounts().get(0).getDraft().deleteMessage(0));
+
+        assertEquals(customerB.getAccounts().get(0).getDraft().getMessages().size(), 2);
+
+    }
+
+    @Test
+    void canDeleteAllMessagesInDraft() throws IsOnFileException {
+        Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
+        Customer customerB = new Customer("Chibuzor", "Angel", "chibuzor@gmail.com", "08174536422");
+
+        server.register(customerA);
+        assertTrue(server.getRegisteredCustomer().contains(customerA));
+        assertTrue(customerA.getAccounts().contains(customerA.getAccounts().get(0)));
+
+        server.register(customerB);
+        assertTrue(server.getRegisteredCustomer().contains(customerB));
+        assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
+
+        customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message("Story", "The man that stole the money is father"), customerB.getEmailAddress());
+        customerA.getAccounts().get(0).sendMessage(new Message( "The man that stole the money is father"), customerB.getEmailAddress());
+
+        assertEquals(customerB.getAccounts().get(0).getDraft().getMessages().size(), 3);
+        customerB.getAccounts().get(0).getDraft().deleteAllMessage();
+
+        assertEquals(customerB.getAccounts().get(0).getDraft().getMessages().size(), 0);
+    }
 }
