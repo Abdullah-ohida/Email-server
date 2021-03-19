@@ -1,4 +1,5 @@
 package com.services;
 
-public class Inbox {
+public class Inbox extends MailBox{
+
 }

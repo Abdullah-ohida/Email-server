@@ -124,12 +124,7 @@ class EmailTest {
 
     @Test
     void message_canPrintOutMessage(){
-        assertEquals(message.toString(), "Subject: Application\nContent: I want to build a software\n");
-    }
-
-    @Test
-    void message_canShowMessageWithoutSubject(){
-        assertEquals(newMassage.toString(), "Subject: \nContent: I want to build a software\n");
+        assertNotNull(message.toString());
     }
 
     @Test
@@ -159,7 +154,7 @@ class EmailTest {
         assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
 
         customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress());
-        assertEquals(customerB.getAccounts().get(0).getInboxes().size(), 1);
+        assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 1);
     }
 
 }

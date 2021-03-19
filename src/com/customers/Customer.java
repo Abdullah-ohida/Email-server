@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer extends Register {
-    private ArrayList<Account> accounts;
+    private final ArrayList<Account> accounts;
 
     public Customer(String firstName, String lastName, String emailAddress, String phoneNumber) {
         super(firstName, lastName, emailAddress, phoneNumber);
-        accounts = new ArrayList<Account>();
+        accounts = new ArrayList<>();
     }
 
     public void addAccount(Account account) {

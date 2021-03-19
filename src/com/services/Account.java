@@ -8,29 +8,27 @@ import java.util.List;
 
 public class Account{
     private final String userName;
-    private final List<Message> inboxes;
-    private final List<Message> drafts;
+    private final Inbox inbox;
+    private final Draft draft;
 
     public Account(Customer customer, String userName) {
         this.userName = userName;
-        inboxes = new ArrayList<>();
-        drafts = new ArrayList<>();
+        inbox = new Inbox();
+        draft = new Draft();
     }
 
     public void sendMessage(Message message, String recipientAddress){
-        drafts.add(message);
+        getDraft().addMessage(message);
         Customer recipient = EmailServer.findRecipient(recipientAddress);
-        recipient.getAccounts().get(0).getInboxes().add(message);
+        recipient.getAccounts().get(0).getInbox().addMessage(message);
     }
 
-
-
-    public List<Message> getInboxes() {
-        return inboxes;
+    public Inbox getInbox() {
+        return inbox;
     }
 
-    public List<Message> getDrafts() {
-        return drafts;
+    public Draft getDraft() {
+        return draft;
     }
 
     public String getUserName() {

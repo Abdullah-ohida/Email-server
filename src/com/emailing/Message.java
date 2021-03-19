@@ -1,19 +1,22 @@
 package com.emailing;
 
+import java.time.LocalTime;
+
 public class Message {
     private String subject;
-    private String recipient;
-    private String sender;
     private String content;
     private String messageId;
+    private final LocalTime time;
 
     public Message(String content){
         this("",content);
+
     }
 
     public Message(String subject, String content) {
         this.subject = subject;
         this.content = content;
+        time = LocalTime.now();
     }
 
     public String getSubject() {
@@ -40,6 +43,15 @@ public class Message {
         this.messageId = messageId;
     }
 
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public String timeFormat(){
+        String meridian = time.getHour() >= 12 ? "PM" : "AM";
+        return meridian;
+    }
+
     /**
      * Returns a string representation of the object. In general, the
      * {@code toString} method returns a string that
@@ -63,6 +75,6 @@ public class Message {
      */
     @Override
     public String toString() {
-        return String.format("Subject: %s\nContent: %s%n", subject, content);
+        return String.format("Subject: %s\nContent: %s\nTime sent: %s:%s %s", subject, content, time.getHour(), time.getMinute(),timeFormat());
     }
 }

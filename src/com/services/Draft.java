@@ -1,4 +1,4 @@
 package com.services;
 
-public class Draft {
+public class Draft extends MailBox{
 }
