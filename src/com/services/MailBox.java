@@ -18,4 +18,21 @@ public abstract class MailBox {
     public ArrayList<Message> getMessages() {
         return messages;
     }
+
+    public void forward(Message message, String ...recipientAddress){
+        Account.sendMessage(message, recipientAddress);
+    }
+
+    public Message getMessageById(int id) {
+        Message isValid = null;
+        for (Message message : messages){
+            if (message.getMessageId() == id)
+                isValid = message;
+        }
+        return isValid;
+    }
+
+    public boolean deleteMessage(int messageById){
+        return messages.remove(getMessageById(messageById));
+    }
 }

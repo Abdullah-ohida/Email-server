@@ -7,7 +7,7 @@ import com.emailing.Message;
 public class Account{
     private final String userName;
     private final Inbox inbox;
-    private final Draft draft;
+    private static Draft draft;
 
     public Account(Customer customer, String userName) {
         this.userName = userName;
@@ -15,7 +15,7 @@ public class Account{
         draft = new Draft();
     }
 
-    public void sendMessage(Message message, String ...recipientAddress){
+    public static void sendMessage(Message message, String ...recipientAddress){
         getDraft().addMessage(message);
         for (String address : recipientAddress){
             Customer recipient = EmailServer.findRecipient(address);
@@ -28,7 +28,7 @@ public class Account{
         return inbox;
     }
 
-    public Draft getDraft() {
+    public static Draft getDraft() {
         return draft;
     }
 

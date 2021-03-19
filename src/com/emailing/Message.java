@@ -5,7 +5,7 @@ import java.time.LocalTime;
 public class Message {
     private String subject;
     private String content;
-    private String messageId;
+    private static int messageId;
     private final LocalTime time;
 
     public Message(String content){
@@ -35,12 +35,12 @@ public class Message {
         this.content = content;
     }
 
-    public String getMessageId() {
+    public int getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void generateMessageId(int messageId) {
+        Message.messageId++;
     }
 
     public LocalTime getTime() {
