@@ -7,14 +7,12 @@ public class Message {
     private String content;
     private String messageId;
 
-    public Message(String recipient, String sender, String content){
-        this("", recipient, sender, content);
+    public Message(String content){
+        this("",content);
     }
 
-    public Message(String subject, String recipient, String sender, String content) {
+    public Message(String subject, String content) {
         this.subject = subject;
-        this.sender = sender;
-        this.recipient = recipient;
         this.content = content;
     }
 
@@ -24,22 +22,6 @@ public class Message {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
     }
 
     public String getContent() {
@@ -81,6 +63,6 @@ public class Message {
      */
     @Override
     public String toString() {
-        return String.format("From: %s\nTo: %s\nSubject: %s\nContent: %s%n", sender, recipient, subject, content);
+        return String.format("Subject: %s\nContent: %s%n", subject, content);
     }
 }

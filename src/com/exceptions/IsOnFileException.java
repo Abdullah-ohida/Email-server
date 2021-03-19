@@ -2,13 +2,13 @@ package com.exceptions;
 
 import java.security.PrivilegedActionException;
 
-public class MessageException extends ServerException{
+public class IsOnFileException extends ServerException{
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      */
-    public MessageException() {
+    public IsOnFileException() {
     }
 
     /**
@@ -19,7 +19,7 @@ public class MessageException extends ServerException{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public MessageException(String message) {
+    public IsOnFileException(String message) {
         super(message);
     }
 
@@ -37,7 +37,7 @@ public class MessageException extends ServerException{
      *                unknown.)
      * @since 1.4
      */
-    public MessageException(String message, Throwable cause) {
+    public IsOnFileException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -55,7 +55,7 @@ public class MessageException extends ServerException{
      *              unknown.)
      * @since 1.4
      */
-    public MessageException(Throwable cause) {
+    public IsOnFileException(Throwable cause) {
         super(cause);
     }
 }

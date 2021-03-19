@@ -1,6 +1,7 @@
 package com.customers;
 
 import com.emailing.Message;
+import com.exceptions.IsOnFileException;
 import com.exceptions.NameLengthException;
 import com.services.EmailServer;
 import org.junit.jupiter.api.AfterEach;
@@ -20,8 +21,8 @@ class EmailTest {
     @BeforeEach
     void setUp() {
         customer = new Customer("Ismail", "Abdullah", "andel@gmail.com", "0905434552");
-        message = new Message("Application", "ohida@gmail.com", "abdul@gmail.com", "I want to build a software");
-        newMassage =  new Message("ohida@gmail.com", "abdul@gmail.com", "I want to build a software");
+        message = new Message("Application", "I want to build a software");
+        newMassage =  new Message("I want to build a software");
         server = new EmailServer();
     }
 
@@ -110,18 +111,6 @@ class EmailTest {
     }
 
     @Test
-    void message_recipientCanBeSet(){
-        message.setRecipient("Kunle@gmail.com");
-        assertEquals(message.getRecipient(), "Kunle@gmail.com");
-    }
-
-    @Test
-    void message_senderCanBeSet(){
-        message.setSender("Kunle@gmail.com");
-        assertEquals(message.getSender(), "Kunle@gmail.com");
-    }
-
-    @Test
     void message_canAddSubjectToEmail(){
         message.setSubject("Empowerment");
         assertEquals(message.getSubject(), "Empowerment");
@@ -135,19 +124,42 @@ class EmailTest {
 
     @Test
     void message_canPrintOutMessage(){
-        assertEquals(message.toString(), "From: abdul@gmail.com\nTo: ohida@gmail.com\nSubject: Application\nContent: I want to build a software\n");
+        assertEquals(message.toString(), "Subject: Application\nContent: I want to build a software\n");
     }
 
     @Test
     void message_canShowMessageWithoutSubject(){
-        assertEquals(newMassage.toString(), "From: abdul@gmail.com\nTo: ohida@gmail.com\nSubject: \nContent: I want to build a software\n");
+        assertEquals(newMassage.toString(), "Subject: \nContent: I want to build a software\n");
     }
 
     @Test
-    void emailServer_canRegisterCustomers(){
+    void emailServer_canRegisterCustomers() throws IsOnFileException {
         server.register(customer);
         assertTrue(server.getRegisteredCustomer().contains(customer));
         assertTrue(customer.getAccounts().contains(customer.getAccounts().get(0)));
+    }
+
+    @Test
+    void emailServer_cannotRegisterCustomerTwice_ThrowIsOnFileException() throws IsOnFileException {
+        server.register(customer);
+        assertThrows(IsOnFileException.class, ()-> server.register(customer));
+    }
+
+    @Test
+    void registeredCustomerCanSendEmail_toAnotherRegisteredCustomer() throws IsOnFileException {
+        Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
+        Customer customerB = new Customer("Chibuzor", "Angel", "chibuzor@gmail.com", "08174536422");
+
+        server.register(customerA);
+        assertTrue(server.getRegisteredCustomer().contains(customerA));
+        assertTrue(customerA.getAccounts().contains(customerA.getAccounts().get(0)));
+
+        server.register(customerB);
+        assertTrue(server.getRegisteredCustomer().contains(customerB));
+        assertTrue(customerB.getAccounts().contains(customerB.getAccounts().get(0)));
+
+        customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress());
+        assertEquals(customerB.getAccounts().get(0).getInboxes().size(), 1);
     }
 
 }
