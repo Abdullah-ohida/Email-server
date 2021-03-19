@@ -157,4 +157,23 @@ class EmailTest {
         assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 1);
     }
 
+    @Test
+    void canSendEmailToMoreThanOnePerson() throws IsOnFileException {
+        Customer customerA = new Customer("Abdul", "Ismail", "wisdom@gmail.com", "0907563654");
+        Customer customerB = new Customer("Chibuzor", "Angel", "chibuzor@gmail.com", "08174536422");
+        Customer customerC = new Customer("Seyi", "Ismail", "seyi@gmail.com", "098377823282");
+        Customer customerD = new Customer("Yinka", "Angel", "yinka@gmail.com", "9093834783488");
+
+        server.register(customerA);
+        server.register(customerB);
+        server.register(customerC);
+        server.register(customerD);
+
+        customerA.getAccounts().get(0).sendMessage(message, customerB.getEmailAddress(), customerC.getEmailAddress(), customerD.getEmailAddress());
+        assertEquals(customerB.getAccounts().get(0).getInbox().getMessages().size(), 1);
+        assertEquals(customerC.getAccounts().get(0).getInbox().getMessages().size(), 1);
+        assertEquals(customerD.getAccounts().get(0).getInbox().getMessages().size(), 1);
+
+    }
+
 }

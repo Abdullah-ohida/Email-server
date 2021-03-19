@@ -3,8 +3,6 @@ package com.services;
 import com.customers.Customer;
 import com.emailing.Message;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Account{
     private final String userName;
@@ -17,10 +15,13 @@ public class Account{
         draft = new Draft();
     }
 
-    public void sendMessage(Message message, String recipientAddress){
+    public void sendMessage(Message message, String ...recipientAddress){
         getDraft().addMessage(message);
-        Customer recipient = EmailServer.findRecipient(recipientAddress);
-        recipient.getAccounts().get(0).getInbox().addMessage(message);
+        for (String address : recipientAddress){
+            Customer recipient = EmailServer.findRecipient(address);
+            recipient.getAccounts().get(0).getInbox().addMessage(message);
+        }
+
     }
 
     public Inbox getInbox() {
